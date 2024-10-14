@@ -1,0 +1,47 @@
+.formliterie, .formcuisine, .formsalledebain, .formtissus, .formpharmaceutique {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #343a40;
+  }
+  
+  input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  input[type="file"] {
+    margin-top: 10px;
+  }
+  
+  button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  

@@ -1,0 +1,13 @@
+.App{
+    margin-top: 100px;
+}
+.bodyy{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.lo{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
