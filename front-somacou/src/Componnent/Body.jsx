@@ -70,6 +70,7 @@ function Body() {
       address: formData.address,
       email: formData.email,
       numero: formData.numero,
+      cart: cart,
     };
 
     axios.post('http://localhost:3000/api/client', data)
@@ -77,13 +78,15 @@ function Body() {
         console.log(response.data);
         alert('Commande envoyée avec succès');
         setFormData({ name: '', address: '', email: '', numero: '' });
+        setCart([]);
         handleCloseForm();
       })
       .catch(error => {
-        console.error('Erreur lors de l\'ajout du client', error);
+        console.error('Erreur lors de l\'envoi de la commande', error);
         alert('Erreur lors de l\'envoi de la commande');
       });
   };
+  
 
   const handleAddToCart = (product) => {
     setCart([...cart, product]); // Ajouter un produit au panier
@@ -190,8 +193,7 @@ function Body() {
                     alt={product.name}
                     style={{ width: '100%', height: 'auto', maxWidth: '200px' }}
                   />
-                  <p>Prix: {product.price} €</p>
-                  <button className="btn btn-primary" onClick={handleBuyClick}>Acheter</button>
+                  <p>Prix: {product.price} ar</p>
                   <button className="btn btn-secondary" onClick={() => handleAddToCart(product)}>Ajouter au panier</button>
                 </li>
               ))}
@@ -204,34 +206,33 @@ function Body() {
 
         {/* Afficher les éléments du panier si le panier est visible */}
         {showCart && (
-          <div className='panier' style={{ marginTop: '20px', backgroundColor:'#adc4d5' }}>
-            <h1>Panier</h1>
-            <ul style={{ 
-              listStyleType: 'none',
-              padding: 0,
-              display: 'grid',
-              gridTemplateColumns: 'repeat(8, 1fr)',
-              gap: '20px',
-              listStyleType: 'none',
-              padding: 0
-            }}>
-              {cart.map((item, index) => (
-                <li key={index} style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
-                  <p>{item.name} - {item.price} €</p>
-                  <img
-                    src={`http://localhost:3000/${item.image_url}`}
-                    alt={item.name}
-                    style={{ width: '100%', height: 'auto', maxWidth: '100px' }}
-                  />
-                  <button className="btn btn-danger btn-sm" onClick={() => handleRemoveFromCart(index)}>Retirer</button>
-                </li>
-              ))}
-            </ul>
-            {cart.length === 0 && <p>Votre panier est vide.</p>}
-            {cart.length > 0 && <h3>Total: {totalPrice} €</h3>}
-            <button>Envoyer la commande</button>
-          </div>
-        )}
+  <div className='panier' style={{ marginTop: '20px', backgroundColor:'#adc4d5' }}>
+    <h1>Panier</h1>
+    <ul style={{ 
+      listStyleType: 'none',
+      padding: 0,
+      display: 'grid',
+      gridTemplateColumns: 'repeat(8, 1fr)',
+      gap: '20px',
+    }}>
+      {cart.map((item, index) => (
+        <li key={index} style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
+          <p>{item.name} - {item.price} ar</p>
+          <img
+            src={`http://localhost:3000/${item.image_url}`}
+            alt={item.name}
+            style={{ width: '100%', height: 'auto', maxWidth: '100px' }}
+          />
+          <button className="btn btn-danger btn-sm" onClick={() => handleRemoveFromCart(index)}>Retirer</button>
+        </li>
+      ))}
+    </ul>
+    {cart.length === 0 && <p>Votre panier est vide.</p>}
+    {cart.length > 0 && <h3>Total: {totalPrice} ar</h3>}
+    <center> <button className="btn btn-primary" onClick={handleBuyClick}>Envoyer la commande</button></center> 
+  </div>
+)}
+
 
         {/* Formulaire pour acheter */}
         {showForm && (
