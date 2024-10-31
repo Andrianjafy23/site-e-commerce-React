@@ -39,10 +39,6 @@ const Admin = () => {
             setCommande(response.data);
         } catch (error) {
             console.error('Erreur lors de la récupération des commandes:', error.message);
-            if (error.response) {
-                console.error('Statut:', error.response.status);
-                console.error('Données:', error.response.data);
-            }
             alert('Erreur lors de la récupération des commandes.');
         }
     };
