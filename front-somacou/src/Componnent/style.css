@@ -92,10 +92,10 @@
 h2 {
   text-align: center;
   font-weight: 300;
-  color: white;
+  color: #ff0000;
   font-size: 2.5rem;
   margin-top: 10px;
-  text-shadow: 0 0 10px rgb(0, 0, 0); 
+  text-shadow: rgba(3, 49, 98, 0.9) 2px 0px 2px; 
 }
 
 h3 {
