@@ -79,6 +79,23 @@ app.get('/api/products', async (req, res) => {
         console.error('Erreur lors de la récupération des produits:', err);
         res.status(500).json({ message: 'Erreur lors de la récupération des produits.' });
     }
+
+    // Route DELETE pour supprimer un produit
+app.delete('/api/products/:id', async (req, res) => {
+    const productId = req.params.id;
+
+    try {
+        const sql = 'DELETE FROM products WHERE id = ?';
+        await query(sql, [productId]);
+        res.status(200).json({ message: 'Produit supprimé avec succès' });
+    } catch (err) {
+        console.error("Erreur SQL lors de la suppression du produit:", err);
+        res.status(500).json({ message: "Erreur lors de la suppression du produit." });
+    }
+});
+
+      
+
 });
 app.post('/api/client', async (req, res) => {
     const { name, address, email, numero, cart } = req.body;
@@ -101,6 +118,19 @@ app.get('/api/client', async (req, res) => {
     } catch (err) {
         console.error('Erreur lors de la récupération des clients:', err);
         res.status(500).json({ message: 'Erreur lors de la récupération des clients.' });
+    }
+});
+
+
+app.delete('/api/client/:id', async (req, res) => {
+    const clientId = req.params.id;
+    try {
+        const sql = 'DELETE FROM client WHERE id = ?';
+        await query(sql, [clientId]);
+        res.status(200).json({ message: 'Commande supprimée avec succès' });
+    } catch (err) {
+        console.error("Erreur SQL lors de la suppression de la commande:", err);
+        res.status(500).json({ message: "Erreur lors de la suppression de la commande." });
     }
 });
 

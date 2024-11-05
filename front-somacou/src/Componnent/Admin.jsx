@@ -70,6 +70,32 @@ const Admin = () => {
         fetchProducts();
     }, []);
 
+
+    const handleDelete = async (productId) => {
+        try {
+            await axios.delete(`http://localhost:3000/api/products/${productId}`);
+            console.log("Produit supprimé avec succès");
+            fetchProducts();  // Actualiser la liste des produits après suppression
+        } catch (error) {
+            console.error("Erreur lors de la suppression du produit:", error);
+            alert("Erreur lors de la suppression du produit.");
+        }
+    };
+    
+    const handleDelete1 = async (ClientID) => {
+        try {
+            await axios.delete(`http://localhost:3000/api/client/${ClientID}`);
+            console.log("Commande supprimée avec succès");
+            fetchCommande();  // Actualiser la liste des commandes après suppression
+        } catch (error) {
+            console.error("Erreur lors de la suppression de la commande:", error);
+            alert("Erreur lors de la suppression de la commande.");
+        }
+    };
+    
+    
+    
+
     return (
         <div className="container mt-5">
             <h2 className="text-center mb-4">AJOUTER UN PRODUIT</h2>
@@ -141,8 +167,11 @@ const Admin = () => {
                         <div className="card-body">
                             <h5 className="card-title text-center">{product.name}</h5>
                             <p className="card-text text-center">Prix : {product.price} ar</p>
-                            <button className="btn btn-danger w-100">Supprimer</button>
                         </div>
+                    </div>
+                    <div style={{display:'flex', flexDirection:'column', gap: '10px'}}>
+                      <button className="btn btn-danger w-100" onClick={() => handleDelete(product.id)}>Supprimer</button>
+                      <button className="btn btn-danger w-100">modifier</button>
                     </div>
                 </div>
             ))}
@@ -158,7 +187,7 @@ const Admin = () => {
             {isLoading ? (
                 <p>Chargement des commandes...</p>
             ) : commande.length > 0 ? (
-                <div className="container">
+            <div className="container">
                 <div className="row">
                     {commande.map((item, index) => (
                         <div key={index} className="col-12 mb-3">
@@ -201,6 +230,7 @@ const Admin = () => {
                                     </div>
                                 </div>
                             </div>
+                            <center><button style={{color:'whitesmoke', background:'red', border:'none', borderRadius:'5px'}} onClick={() => handleDelete1(item.id)}>supprimer la commande</button></center>
                         </div>
                     ))}
                 </div>
