@@ -82,17 +82,17 @@ const Admin = () => {
         }
     };
     
-    const handleDelete1 = async (ClientID) => {
-        try {
-            await axios.delete(`http://localhost:3000/api/client/${ClientID}`);
-            console.log("Commande supprimée avec succès");
-            fetchCommande();  // Actualiser la liste des commandes après suppression
-        } catch (error) {
-            console.error("Erreur lors de la suppression de la commande:", error);
-            alert("Erreur lors de la suppression de la commande.");
-        }
-    };
-    
+   const handleDelete1 = async (ClientID) => {
+    try {
+        await axios.delete(`http://localhost:3000/api/client/${ClientID}`);
+        console.log("Commande supprimée avec succès");
+        fetchCommande();  // Actualiser la liste des commandes après suppression
+    } catch (error) {
+        console.error("Erreur lors de la suppression de la commande:", error);
+        alert("Erreur lors de la suppression de la commande.");
+    }
+};
+
     
     
 
@@ -171,7 +171,6 @@ const Admin = () => {
                     </div>
                     <div style={{display:'flex', flexDirection:'column', gap: '10px'}}>
                       <button className="btn btn-danger w-100" onClick={() => handleDelete(product.id)}>Supprimer</button>
-                      <button className="btn btn-danger w-100">modifier</button>
                     </div>
                 </div>
             ))}

@@ -94,7 +94,7 @@ app.delete('/api/products/:id', async (req, res) => {
     }
 });
 
-      
+
 
 });
 app.post('/api/client', async (req, res) => {

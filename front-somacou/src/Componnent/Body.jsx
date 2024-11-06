@@ -14,9 +14,10 @@ function Body() {
     phar: false,
   });
   const [activeSection, setActiveSection] = useState(null);
+  const [filteredProductName, setFilteredProductName] = useState(null);
   const [showForm, setShowForm] = useState(false);
-  const [cart, setCart] = useState([]); // État pour le panier
-  const [showCart, setShowCart] = useState(false); // État pour afficher/masquer le panier
+  const [cart, setCart] = useState([]);
+  const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -27,7 +28,6 @@ function Body() {
         console.error('Erreur lors de la récupération des produits:', error);
       }
     };
-
     fetchProducts();
   }, []);
 
@@ -38,8 +38,8 @@ function Body() {
     }));
   };
 
-  const handleLinkClick = (section) => {
-    setActiveSection(activeSection === section ? null : section);
+  const handleFilterClick = (productName) => {
+    setFilteredProductName(productName);
   };
 
   const handleBuyClick = () => {
@@ -64,7 +64,6 @@ function Body() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     const data = {
       name: formData.name,
       address: formData.address,
@@ -75,29 +74,29 @@ function Body() {
 
     axios.post('http://localhost:3000/api/client', data)
       .then(response => {
-        console.log(response.data);
         alert('Commande envoyée avec succès');
         setFormData({ name: '', address: '', email: '', numero: '' });
         setCart([]);
         handleCloseForm();
       })
       .catch(error => {
-        console.error('Erreur lors de l\'envoi de la commande', error);
         alert('Erreur lors de l\'envoi de la commande');
       });
   };
-  
 
   const handleAddToCart = (product) => {
-    setCart([...cart, product]); // Ajouter un produit au panier
+    setCart([...cart, product]);
   };
 
   const handleRemoveFromCart = (index) => {
-    setCart(cart.filter((_, i) => i !== index)); // Retirer un produit du panier
+    setCart(cart.filter((_, i) => i !== index));
   };
 
-  // Calculer le prix total du panier
   const totalPrice = cart.reduce((total, product) => total + product.price, 0);
+
+  const filteredProducts = filteredProductName
+    ? products.filter(product => product.name.toLowerCase().includes(filteredProductName.toLowerCase()))
+    : products;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -110,7 +109,7 @@ function Body() {
         {expandedSections.literie && (
           <div className='list'>
             {['COUVERTURES', 'DRAPS', 'TRAVERSIN', 'OREILLERS, COUSSINS', 'COUETTE', 'COUVRE LIT'].map(item => (
-              <a href="#" key={item} onClick={() => handleLinkClick('literie')}>{item}</a>
+              <a href="#" key={item} onClick={() => handleFilterClick(item)}>{item}</a>
             ))}
           </div>
         )}
@@ -122,7 +121,7 @@ function Body() {
         {expandedSections.cuisines && (
           <div className='list'>
             {['NAPPES', 'TORCHONS', 'SERPILLERES'].map(item => (
-              <a href="#" key={item} onClick={() => handleLinkClick('cuisines')}>{item}</a>
+              <a href="#" key={item} onClick={() => handleFilterClick(item)}>{item}</a>
             ))}
           </div>
         )}
@@ -133,10 +132,9 @@ function Body() {
         </h3>
         {expandedSections.salle && (
           <div className='list'>
-            <a href="#" onClick={() => handleLinkClick('salle')}>TAPIS DE BAIN</a>
-            <a href="#" onClick={() => handleLinkClick('salle')}>SERVIETTES</a>
-            <a href="#" onClick={() => handleLinkClick('salle')}>PEIGNOIR</a>
-            <a href="#" onClick={() => handleLinkClick('salle')}>ENSEMBLE</a>
+            {['TAPIS DE BAIN', 'SERVIETTES', 'PEIGNOIR', 'ENSEMBLE'].map(item => (
+              <a href="#" key={item} onClick={() => handleFilterClick(item)}>{item}</a>
+            ))}
           </div>
         )}
 
@@ -147,7 +145,7 @@ function Body() {
         {expandedSections.tissus && (
           <div className='list'>
             {['TISSUS D\'AMEUBLEMENT', 'TISSUS LINGE DE MAISON', 'TISSUS IMPORT', 'TISSUS MÉTIS'].map(item => (
-              <a href="#" key={item} onClick={() => handleLinkClick('tissus')}>{item}</a>
+              <a href="#" key={item} onClick={() => handleFilterClick(item)}>{item}</a>
             ))}
           </div>
         )}
@@ -158,117 +156,103 @@ function Body() {
         </h3>
         {expandedSections.phar && (
           <div className='list'>
-            <a href="#" onClick={() => handleLinkClick('phar')}>COTON</a>
+            <a href="#" onClick={() => handleFilterClick('COTON')}>COTON</a>
           </div>
         )}
-
-        <h3>MENAGE</h3>
-        <h3>RIDEAUX</h3>
-        <h3>BRODERIE</h3>
-        <h3>FIL A TRICOTER</h3>
         
+        <button className="btn btn-secondary" onClick={() => setFilteredProductName(null)}>Voir tous les produits</button>
       </div>
 
       <div className='produit'>
-        {!activeSection && (
-          <div className='pardefaut'>
-            <ul style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '20px',
-              listStyleType: 'none',
-              padding: 0
+        <ul style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '20px',
+          listStyleType: 'none',
+          padding: 0
+        }}>
+          {filteredProducts.map((product) => (
+            <li key={product.id} style={{
+              textAlign: 'center',
+              border: '1px solid #ddd',
+              padding: '10px',
+              borderRadius: '8px',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
             }}>
-              {products.map((product) => (
-                <li key={product.id} style={{
-                  textAlign: 'center',
-                  border: '1px solid #ddd',
-                  padding: '10px',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-                }}>
-                  <h3>{product.name}</h3>
+              <h3>{product.name}</h3>
+              <img
+                src={`http://localhost:3000/${product.image_url}`}
+                alt={product.name}
+                style={{ width: '100%', height: 'auto', maxWidth: '200px' }}
+              />
+              <p>Prix: {product.price} ar</p>
+              <button className="btn btn-secondary" onClick={() => handleAddToCart(product)}>Ajouter au panier</button>
+            </li>
+          ))}
+        </ul>
+        <button className="btn btn-info" onClick={() => setShowCart(!showCart)}>
+          {showCart ? 'Masquer le panier' : 'Voir le panier'}
+        </button>
+
+        {showCart && (
+          <div className='panier' style={{ marginTop: '20px', backgroundColor:'#adc4d5' }}>
+            <h1>Panier</h1>
+            <ul style={{ 
+              listStyleType: 'none',
+              padding: 0,
+              display: 'grid',
+              gridTemplateColumns: 'repeat(8, 1fr)',
+              gap: '20px',
+            }}>
+              {cart.map((item, index) => (
+                <li key={index} style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
+                  <p>{item.name} - {item.price} ar</p>
                   <img
-                    src={`http://localhost:3000/${product.image_url}`}
-                    alt={product.name}
-                    style={{ width: '100%', height: 'auto', maxWidth: '200px' }}
+                    src={`http://localhost:3000/${item.image_url}`}
+                    alt={item.name}
+                    style={{ width: '100%', height: 'auto', maxWidth: '100px' }}
                   />
-                  <p>Prix: {product.price} ar</p>
-                  <button className="btn btn-secondary" onClick={() => handleAddToCart(product)}>Ajouter au panier</button>
+                  <button className="btn btn-danger btn-sm" onClick={() => handleRemoveFromCart(index)}>Retirer</button>
                 </li>
               ))}
             </ul>
+            {cart.length === 0 && <p>Votre panier est vide.</p>}
+            {cart.length > 0 && <h3>Total: {totalPrice} ar</h3>}
+            <button className="btn btn-primary" onClick={handleBuyClick}>Envoyer la commande</button>
           </div>
         )}
-
-        {/* Ajouter un bouton pour afficher/masquer le panier */}
-       <center> <button className="btn btn-info" onClick={() => setShowCart(!showCart)}>{showCart ? 'Masquer le panier' : 'Voir le panier'}</button></center>
-
-        {/* Afficher les éléments du panier si le panier est visible */}
-        {showCart && (
-  <div className='panier' style={{ marginTop: '20px', backgroundColor:'#adc4d5' }}>
-    <h1>Panier</h1>
-    <ul style={{ 
-      listStyleType: 'none',
-      padding: 0,
-      display: 'grid',
-      gridTemplateColumns: 'repeat(8, 1fr)',
-      gap: '20px',
-    }}>
-      {cart.map((item, index) => (
-        <li key={index} style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
-          <p>{item.name} - {item.price} ar</p>
-          <img
-            src={`http://localhost:3000/${item.image_url}`}
-            alt={item.name}
-            style={{ width: '100%', height: 'auto', maxWidth: '100px' }}
-          />
-          <button className="btn btn-danger btn-sm" onClick={() => handleRemoveFromCart(index)}>Retirer</button>
-        </li>
-      ))}
-    </ul>
-    {cart.length === 0 && <p>Votre panier est vide.</p>}
-    {cart.length > 0 && <h3>Total: {totalPrice} ar</h3>}
-    <center> <button className="btn btn-primary" onClick={handleBuyClick}>Envoyer la commande</button></center> 
-  </div>
-)}
-
-
-        {/* Formulaire pour acheter */}
+        
         {showForm && (
           <div className="modal d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
             <div className="modal-dialog">
-      <div className="modal-content" style={{ backgroundColor: 'whitesmoke' }}>
-        <div className="modal-header">
-          <h5 className="modal-title">Formulaire d'ajout de client</h5>
-          <button type="button" className="btn-close" onClick={handleCloseForm}></button>
-        </div>
-        <div className="modal-body">
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">Nom</label>
-              <input type="text" className="form-control" id="name" value={formData.name} onChange={handleChange} />
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Formulaire de commande</h5>
+                  <button type="button" className="btn-close" onClick={handleCloseForm}></button>
+                </div>
+                <div className="modal-body">
+                  <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                      <label htmlFor="name" className="form-label">Nom</label>
+                      <input type="text" className="form-control" id="name" value={formData.name} onChange={handleChange} />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="address" className="form-label">Adresse</label>
+                      <input type="text" className="form-control" id="address" value={formData.address} onChange={handleChange} />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="email" className="form-label">Email</label>
+                      <input type="email" className="form-control" id="email" value={formData.email} onChange={handleChange} />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="numero" className="form-label">Numéro</label>
+                      <input type="text" className="form-control" id="numero" value={formData.numero} onChange={handleChange} />
+                    </div>
+                    <button type="submit" className="btn btn-primary">Envoyer</button>
+                  </form>
+                </div>
+              </div>
             </div>
-            <div className="mb-3">
-              <label htmlFor="address" className="form-label">Adresse</label>
-              <input type="text" className="form-control" id="address" value={formData.address} onChange={handleChange} />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">Email</label>
-              <input type="email" className="form-control" id="email" value={formData.email} onChange={handleChange} />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="numero" className="form-label">Numéro de téléphone</label>
-              <input type="text" className="form-control" id="numero" value={formData.numero} onChange={handleChange} />
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={handleCloseForm}>Fermer</button>
-              <button type="submit" className="btn btn-primary"> confirmer l'achat</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
           </div>
         )}
       </div>
