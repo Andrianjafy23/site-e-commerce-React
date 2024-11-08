@@ -3,6 +3,7 @@ import axios from 'axios';
 import './style.css';
 import { SlArrowDown } from "react-icons/sl";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { TiShoppingCart } from "react-icons/ti";
 
 function Body() {
   const [products, setProducts] = useState([]);
@@ -13,7 +14,7 @@ function Body() {
     tissus: true,
     phar: false,
   });
-  const [activeSection, setActiveSection] = useState(null);
+
   const [filteredProductName, setFilteredProductName] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [cart, setCart] = useState([]);
@@ -84,15 +85,23 @@ function Body() {
       });
   };
 
+ 
   const handleAddToCart = (product) => {
     setCart([...cart, product]);
+    alert("Bien ajouté au panier");
   };
-
   const handleRemoveFromCart = (index) => {
     setCart(cart.filter((_, i) => i !== index));
   };
 
-  const totalPrice = cart.reduce((total, product) => total + product.price, 0);
+  const totalPrice = cart.reduce((total, product) => {
+    const price = parseFloat(product.price);
+    if (isNaN(price)) {
+      return total; 
+    }
+    return total + price;
+  }, 0);
+  
 
   const filteredProducts = filteredProductName
     ? products.filter(product => product.name.toLowerCase().includes(filteredProductName.toLowerCase()))
@@ -163,37 +172,19 @@ function Body() {
       </div>
 
       <div className='produit'>
-        <ul style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '20px',
-          listStyleType: 'none',
-          padding: 0
-        }}>
-          {filteredProducts.map((product) => (
-            <li key={product.id} style={{
-              textAlign: 'center',
-              border: '1px solid #ddd',
-              padding: '10px',
-              borderRadius: '8px',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-            }}>
-              <h3>{product.name}</h3>
-              <img
-                src={`http://localhost:3000/${product.image_url}`}
-                alt={product.name}
-                style={{ width: '100%', height: 'auto', maxWidth: '200px' }}
-              />
-              <p>Prix: {product.price} ar</p>
-              <button className="btn btn-secondary" onClick={() => handleAddToCart(product)}>Ajouter au panier</button>
-            </li>
-          ))}
-        </ul>
-        <center>
-          <button className="btn btn-info" onClick={() => setShowCart(!showCart)}>
-            {showCart ? 'Masquer le panier' : 'Voir le panier'}
-          </button>
-        </center>
+  
+  <button style={{ border: 'none', marginLeft:'85%', marginBottom:'10px', backgroundColor:'white' }} onClick={() => setShowCart(!showCart)}>
+    {showCart ? (
+      <>
+        Mon compte|<TiShoppingCart style={{ fontSize: '30px' }} />
+      </>
+    ) : (
+      <>
+        Mon compte|<TiShoppingCart style={{ fontSize: '30px' }} />
+      </>
+    )}
+  </button>
+
 
         {showCart && (
           <div className='panier' style={{ marginTop: '20px', backgroundColor:'#adc4d5' }}>
@@ -222,6 +213,32 @@ function Body() {
             <button className="btn btn-primary" onClick={handleBuyClick}>Envoyer la commande</button>
           </div>
         )}
+        <ul style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '20px',
+          listStyleType: 'none',
+          padding: 0
+        }}>
+          {filteredProducts.map((product) => (
+            <li key={product.id} style={{
+              textAlign: 'center',
+              border: '1px solid #ddd',
+              padding: '10px',
+              borderRadius: '8px',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+            }}>
+              <h3>{product.name}</h3>
+              <img
+                src={`http://localhost:3000/${product.image_url}`}
+                alt={product.name}
+                style={{ width: '100%', height: 'auto', maxWidth: '200px' }}
+              />
+              <p>Prix: {product.price} ar</p>
+              <button className="btn btn-secondary" onClick={() => handleAddToCart(product)}>Ajouter au panier</button>
+            </li>
+          ))}
+        </ul>
         
         {showForm && (
           <div className="modal d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>

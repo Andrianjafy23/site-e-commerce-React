@@ -1,9 +1,11 @@
 const express = require('express');
-const mysql = require('mysql');
 const multer = require('multer');
 const path = require('path');
 const cors = require('cors');
 const util = require('util');
+const bcrypt = require('bcryptjs');
+const mysql = require('mysql2');
+
 
 const app = express();
 const PORT = 3000;
@@ -134,6 +136,41 @@ app.delete('/api/client/:id', async (req, res) => {
     }
 });
 
+app.post('/api/users', (req, res) => {
+    const { email, password } = req.body;
+
+    // Requête SQL pour récupérer l'utilisateur par email
+    db.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
+        if (error) {
+            console.error('Erreur SQL:', error);
+            return res.status(500).json({ success: false, message: 'Erreur serveur' });
+        }
+
+        // Si aucun utilisateur n'est trouvé avec l'email donné
+        if (results.length === 0) {
+            console.log(`Aucun utilisateur trouvé avec l'email: ${email}`);
+            return res.status(401).json({ success: false, message: 'Utilisateur non trouvé' });
+        }
+
+        const user = results[0]; // On récupère le premier utilisateur trouvé
+
+        // Log du rôle et mot de passe pour déboguer
+        console.log('Utilisateur trouvé:', user);
+        console.log('Rôle de l\'utilisateur :', user.role);
+
+        // Comparer le mot de passe en clair
+        if (password === user.password && user.role === 'admin') {
+            console.log('Mot de passe correct, rôle admin');
+            return res.json({ success: true, message: 'Connexion réussie' });
+        } else {
+            console.log('Mot de passe incorrect ou rôle non admin');
+            return res.status(401).json({ success: false, message: 'Identifiants incorrects' });
+        }
+    });
+});
+
+
+  
 
 process.on('SIGINT', () => {
     db.end((err) => {

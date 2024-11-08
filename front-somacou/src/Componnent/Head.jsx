@@ -41,6 +41,7 @@ function Head() {
           <Offcanvas.Body>
             <Nav style={{ display:'flex', alignItems:'center', gap:'200px'}}>
               <Nav.Link href="/">HOME</Nav.Link>
+              <Nav.Link href="/contact">CONTACT</Nav.Link>
               <NavDropdown title="PRODUITS" id={`offcanvasNavbarDropdown-expand-${expand}`}>
                 <NavDropdown.Item href="/body">LITERIE</NavDropdown.Item>
                 <NavDropdown.Item href="/body">CUISINE</NavDropdown.Item>
@@ -66,3 +67,12 @@ function Head() {
 }
 
 export default Head;
+
+
+
+
+
+
+
+
+

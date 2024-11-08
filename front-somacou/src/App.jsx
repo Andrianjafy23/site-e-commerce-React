@@ -7,6 +7,7 @@ import Pied from './Componnent/Pied';
 import Body from './Componnent/Body';
 import Admin from './Componnent/Admin';
 import Button from './Componnent/Button';
+import Users from './Componnent/Users';
 
 const Home = () => (
   <div className='lo'>
@@ -31,7 +32,8 @@ function App() {
         <div>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin" element={<Users />} />
+            <Route path="/adminUsers" element={<Admin />} />
             <Route path="/body" element={<Bod />} />
 
           </Routes>
