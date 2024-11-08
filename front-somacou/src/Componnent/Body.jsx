@@ -7,10 +7,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function Body() {
   const [products, setProducts] = useState([]);
   const [expandedSections, setExpandedSections] = useState({
-    literie: false,
-    cuisines: false,
-    salle: false,
-    tissus: false,
+    literie: true,
+    cuisines: true,
+    salle: true,
+    tissus: true,
     phar: false,
   });
   const [activeSection, setActiveSection] = useState(null);
@@ -159,14 +159,13 @@ function Body() {
             <a href="#" onClick={() => handleFilterClick('COTON')}>COTON</a>
           </div>
         )}
-        
-        <button className="btn btn-secondary" onClick={() => setFilteredProductName(null)}>Voir tous les produits</button>
+      
       </div>
 
       <div className='produit'>
         <ul style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
+          gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '20px',
           listStyleType: 'none',
           padding: 0
@@ -190,9 +189,11 @@ function Body() {
             </li>
           ))}
         </ul>
-        <button className="btn btn-info" onClick={() => setShowCart(!showCart)}>
-          {showCart ? 'Masquer le panier' : 'Voir le panier'}
-        </button>
+        <center>
+          <button className="btn btn-info" onClick={() => setShowCart(!showCart)}>
+            {showCart ? 'Masquer le panier' : 'Voir le panier'}
+          </button>
+        </center>
 
         {showCart && (
           <div className='panier' style={{ marginTop: '20px', backgroundColor:'#adc4d5' }}>

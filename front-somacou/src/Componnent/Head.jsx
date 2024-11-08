@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { FaSearch } from 'react-icons/fa'; 
 import logo from '../assets/logo.png';
 
 function Head() {
@@ -29,23 +27,6 @@ function Head() {
           />
           <span style={{ marginLeft: '10px' }}>SOMACOU</span> 
         </Navbar.Brand>
-        <Form className="d-flex" style={{ width: '20%', marginRight: 'auto', position: 'relative' }}>
-          <Form.Control
-            type="search"
-            placeholder="Rechercher un produit... "
-            aria-label="Search"
-            style={{ borderRadius: '5px', padding: '0.5rem 1rem', paddingLeft: '2.5rem' }} 
-          />
-          <FaSearch 
-            style={{ 
-              position: 'absolute', 
-              left: '10px', 
-              top: '50%', 
-              transform: 'translateY(-50%)',
-              color: '#888' 
-            }} 
-          />
-        </Form>
         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
         <Navbar.Offcanvas
           id={`offcanvasNavbar-expand-${expand}`}
@@ -58,8 +39,8 @@ function Head() {
             </Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <Nav style={{ display:'flex', alignItems:'center', gap:'40px'}}>
-              <Nav.Link href="#action1">HOME</Nav.Link>
+            <Nav style={{ display:'flex', alignItems:'center', gap:'200px'}}>
+              <Nav.Link href="/">HOME</Nav.Link>
               <NavDropdown title="PRODUITS" id={`offcanvasNavbarDropdown-expand-${expand}`}>
                 <NavDropdown.Item href="/body">LITERIE</NavDropdown.Item>
                 <NavDropdown.Item href="/body">CUISINE</NavDropdown.Item>

@@ -6,10 +6,12 @@ import Animé from './Componnent/Animé';
 import Pied from './Componnent/Pied';
 import Body from './Componnent/Body';
 import Admin from './Componnent/Admin';
+import Button from './Componnent/Button';
 
 const Home = () => (
   <div className='lo'>
     <Animé />
+    <Button/>
     <Pied />
   </div>
 );
