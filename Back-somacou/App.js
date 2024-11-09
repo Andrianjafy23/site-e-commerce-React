@@ -169,7 +169,21 @@ app.post('/api/users', (req, res) => {
     });
 });
 
-
+app.post('/api/contact', (req, res) => {
+    console.log('Données reçues:', req.body); // Affiche les données reçues
+    const { nom = 'default_titre', email, num, sujet, mes } = req.body;
+    const sql = 'INSERT INTO contact (nom, email, num, sujet, mes) VALUES (?, ?, ?, ?, ?)';
+    const values = [nom, email, num, sujet, mes];
+  
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        console.error('Erreur SQL:', err);
+        return res.status(500).json({ message: "Erreur lors de l'envoi du message", error: err });
+      }
+      res.json({ message: 'Message envoyé', result });
+    });
+  });
+      
   
 
 process.on('SIGINT', () => {

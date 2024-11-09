@@ -27,7 +27,7 @@ function Users() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" style={{width:'30%'}}>
       <div className="card p-4 shadow-sm">
         <h2 className="text-center mb-4">Admin</h2>
         {errorMessage && <p className="text-danger text-center">{errorMessage}</p>}

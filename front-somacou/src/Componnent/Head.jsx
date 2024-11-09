@@ -48,7 +48,7 @@ function Head() {
                 <NavDropdown.Item href="/body">SALLE DE BAIN</NavDropdown.Item>
                 <NavDropdown.Item href="/body">TISSUS</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action5">PHARMACEUTIQUES</NavDropdown.Item>
+                <NavDropdown.Item href="/body">PHARMACEUTIQUES</NavDropdown.Item>
               </NavDropdown>
               <NavDropdown title="SERVICES" id={`offcanvasNavbarDropdown-expand-${expand}`}>
                 <NavDropdown.Item href="#action3">BLANCHISSERIE</NavDropdown.Item>
